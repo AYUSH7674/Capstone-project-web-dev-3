@@ -1,0 +1,10 @@
+const router = require('express').Router();
+const c = require('../controllers/announcementController');
+const { authenticate, allowRoles } = require('../middleware/auth');
+router.use(authenticate);
+router.get('/', c.listAnnouncements);
+router.post('/', allowRoles('admin', 'faculty'), c.createAnnouncement);
+router.get('/:id', c.getAnnouncement);
+router.patch('/:id', allowRoles('admin', 'faculty'), c.updateAnnouncement);
+router.delete('/:id', allowRoles('admin', 'faculty'), c.archiveAnnouncement);
+module.exports = router;

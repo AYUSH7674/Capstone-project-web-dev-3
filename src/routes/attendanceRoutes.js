@@ -1,0 +1,10 @@
+const router = require('express').Router();
+const c = require('../controllers/attendanceController');
+const { authenticate, allowRoles } = require('../middleware/auth');
+router.use(authenticate);
+router.get('/me', allowRoles('student'), c.myAttendance);
+router.get('/reports/sections/:sectionId', allowRoles('admin', 'faculty'), c.report);
+router.get('/sections/:sectionId', allowRoles('admin', 'faculty'), c.listSectionAttendance);
+router.post('/', allowRoles('admin', 'faculty'), c.markAttendance);
+router.patch('/:id', allowRoles('admin', 'faculty'), c.correctAttendance);
+module.exports = router;
